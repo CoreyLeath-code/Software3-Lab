@@ -26,7 +26,7 @@ This project demonstrates **how modern AI systems are actually built in industry
 
 ## 🧠 Architecture Overview
 User / API Request ↓ FastAPI Service ↓ LLM MCP Agent (GPT-4) ↓ LangChain Tools ↓ ML Training / Evaluation ↓ MLflow Metrics & Artifacts
-
+User Input → Loan Service → Business Logic → File Storage → Output
 
 
  Key Components
