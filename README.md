@@ -1,14 +1,15 @@
-# 🚀 Software3-Lab — LLM-Augmented AI Control Plane
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![MLflow](https://img.shields.io/badge/MLflow-Tracking-blue)
-![LangChain](https://img.shields.io/badge/LangChain-MCP-orange)
-![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
-![CI](https://github.com/Trojan3877/Software3-Lab/actions/workflows/ci.yml/badge.svg)
-![License](https://img.shields.io/badge/License-MIT-green)
+![C#](https://img.shields.io/badge/C%23-Production%20Code-blue?logo=csharp)
+![.NET](https://img.shields.io/badge/.NET-Application%20Development-512BD4?logo=dotnet)
+![OOP](https://img.shields.io/badge/Design-OOP%20Principles-orange)
+![Architecture](https://img.shields.io/badge/Architecture-Modular%20System-purple)
+![Data Handling](https://img.shields.io/badge/Data-File%20I%2FO-green)
+![Error Handling](https://img.shields.io/badge/Robustness-Exception%20Handling-red)
+![Scalability](https://img.shields.io/badge/Code-Clean%20Architecture-blue)
+![Status](https://img.shields.io/badge/Status-Portfolio%20Ready-brightgreen)
+![Last Commit](https://img.shields.io/github/last-commit/Trojan3877/Software3-Lab)
+![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/Software3-Lab)
+![Stars](https://img.shields.io/github/stars/Trojan3877/Software3-Lab?style=social)
 
-
-📌 Overview
 
 **Software3-Lab** is a **production-style AI system** that combines:
 
@@ -21,15 +22,14 @@
 
 This project demonstrates **how modern AI systems are actually built in industry**.
 
----
+
 
 ## 🧠 Architecture Overview
 User / API Request ↓ FastAPI Service ↓ LLM MCP Agent (GPT-4) ↓ LangChain Tools ↓ ML Training / Evaluation ↓ MLflow Metrics & Artifacts
 
----
----
 
-## 🧩 Key Components
+
+ Key Components
 
 ### 1. Machine Learning Layer
 - Algorithm: Logistic Regression
@@ -53,9 +53,9 @@ User / API Request ↓ FastAPI Service ↓ LLM MCP Agent (GPT-4) ↓ LangChain T
 - Reproducible experiments
 - CI-validated training
 
----
 
-## 🔧 Tech Stack
+
+Tech Stack
 
 | Layer | Technology |
 |----|----|
@@ -68,9 +68,9 @@ User / API Request ↓ FastAPI Service ↓ LLM MCP Agent (GPT-4) ↓ LangChain T
 | Container | Docker |
 | Language | Python 3.10 |
 
----
 
-## 📊 Metrics & Evaluation
+
+Metrics & Evaluation
 
 Detailed performance metrics, experiment logs, and system evaluation are available in:
 
