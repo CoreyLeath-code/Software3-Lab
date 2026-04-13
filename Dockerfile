@@ -1,15 +1,7 @@
-FROM python:3.10-slim
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 
 WORKDIR /app
+COPY . .
+RUN dotnet build
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY src/ src/
-COPY tools/ tools/
-
-EXPOSE 8000
-
-CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
-uvicorn src.api:app --reload
-http://localhost:8000/docs
+CMD ["dotnet", "run"]
