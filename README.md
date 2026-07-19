@@ -1,114 +1,146 @@
-![C#](https://img.shields.io/badge/C%23-Production%20Code-blue?logo=csharp)
-![.NET](https://img.shields.io/badge/.NET-Application%20Development-512BD4?logo=dotnet)
-![OOP](https://img.shields.io/badge/Design-OOP%20Principles-orange)
-![Architecture](https://img.shields.io/badge/Architecture-Modular%20System-purple)
-![Data Handling](https://img.shields.io/badge/Data-File%20I%2FO-green)
-![Error Handling](https://img.shields.io/badge/Robustness-Exception%20Handling-red)
-![Scalability](https://img.shields.io/badge/Code-Clean%20Architecture-blue)
-![Status](https://img.shields.io/badge/Status-Portfolio%20Ready-brightgreen)
-![Last Commit](https://img.shields.io/github/last-commit/Trojan3877/Software3-Lab)
-![Repo Size](https://img.shields.io/github/repo-size/Trojan3877/Software3-Lab)
-![Stars](https://img.shields.io/github/stars/Trojan3877/Software3-Lab?style=social)
+# Software3-Lab
 
+[![.NET CI](https://github.com/CoreyLeath-code/Software3-Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/CoreyLeath-code/Software3-Lab/actions/workflows/ci.yml)
+[![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![Tests](https://img.shields.io/badge/tests-4%20passing-brightgreen)](tests/LoanTests.cs)
+[![Benchmarks](https://img.shields.io/badge/benchmarks-BenchmarkDotNet-blue)](benchmarks/Program.cs)
+[![Container](https://img.shields.io/badge/container-non--root-2496ED?logo=docker)](Dockerfile)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/CoreyLeath-code/Software3-Lab)](https://github.com/CoreyLeath-code/Software3-Lab/commits/main)
 
-**Software3-Lab** is a **production-style AI system** that combines:
+Software3-Lab is a .NET 8 loan-tracking reference application. It models installment and balloon loans, validates domain inputs, calculates payment schedules, persists heterogeneous loan records as JSON, and verifies the implementation with automated correctness tests and reproducible microbenchmarks.
 
-- Classical Machine Learning
-- Experiment tracking (MLflow)
-- LLM-based orchestration (GPT-4)
-- Model Control Plane (MCP) architecture
-- FastAPI service layer
-- CI/CD + Docker parity
+## Capabilities
 
-This project demonstrates **how modern AI systems are actually built in industry**.
+- amortized installment-loan payment calculations
+- interest-only balloon payments with a final principal payment
+- immutable lender and loan domain state
+- JSON save/load with explicit polymorphic reconstruction
+- nullable-reference analysis and warnings-as-errors
+- xUnit correctness tests with TRX and coverage artifacts
+- BenchmarkDotNet latency, throughput, variance, and allocation evidence
+- multi-stage, non-root .NET container image
 
+## Architecture
 
+```text
+Program.cs
+   |
+   +-- LoanService
+   |      +-- manages Loan collections
+   |
+   +-- Loan (abstract)
+          +-- InstallmentLoan
+          +-- BalloonLoan
+          +-- Lender
 
-## 🧠 Architecture Overview
-User / API Request ↓ FastAPI Service ↓ LLM MCP Agent (GPT-4) ↓ LangChain Tools ↓ ML Training / Evaluation ↓ MLflow Metrics & Artifacts
-User Input → Loan Service → Business Logic → File Storage → Output
+FileOperations <--> loans.json
+```
 
+| Concern | Implementation |
+|---|---|
+| Runtime | .NET 8, C# |
+| Domain | `Domain/` |
+| Application service | `Services/LoanService.cs` |
+| Persistence | `Domain/FileOperations.cs`, System.Text.Json |
+| Correctness | xUnit + Microsoft.NET.Test.Sdk |
+| Performance | BenchmarkDotNet 0.14.0 |
+| Automation | GitHub Actions |
+| Packaging | Multi-stage Docker build |
 
- Key Components
+## Correctness metrics
 
-### 1. Machine Learning Layer
-- Algorithm: Logistic Regression
-- Dataset: Iris
-- Framework: Scikit-learn
-- Metrics logged via MLflow
+The correctness suite uses fixed inputs and exact decimal expectations. It is run in Release mode on every pull request and push to `main`.
 
-### 2. LLM Model Control Plane (MCP)
-- LLM: GPT-4
-- Framework: LangChain
-- Pattern: Tool-based orchestration
-- Separation of reasoning and execution
+| Test objective | Input | Expected result | Status |
+|---|---:|---:|---|
+| Amortized payment | $10,000, 5% APR, 3 years | $299.71/month | Pass |
+| Zero-interest boundary | $1,200, 0% APR, 1 year | $100.00/month | Pass |
+| Balloon payment | $12,000, 6% APR | $60/month; $12,060 final | Pass |
+| Invalid principal | $0 | `ArgumentOutOfRangeException` | Pass |
 
-### 3. API Layer
-- Framework: FastAPI
-- Swagger UI enabled
-- Safe, auditable LLM execution
+**Observed result:** 4/4 tests passed (100%) in [GitHub Actions run 29700880940](https://github.com/CoreyLeath-code/Software3-Lab/actions/runs/29700880940). This is test-case pass rate, not statement or branch coverage. Raw TRX and coverage files are retained as CI artifacts.
 
-### 4. Experiment Tracking
-- MLflow for parameters, metrics, and models
-- Reproducible experiments
-- CI-validated training
+## Research-style benchmark
 
+### Research question
 
+What is the steady-state cost of the core calculation and presentation paths under a controlled .NET 8 runtime?
 
-Tech Stack
+### Method
 
-| Layer | Technology |
-|----|----|
-| ML | Scikit-learn |
-| LLM | GPT-4 |
-| MCP | LangChain |
-| Tracking | MLflow |
-| API | FastAPI |
-| CI/CD | GitHub Actions |
-| Container | Docker |
-| Language | Python 3.10 |
+The checked-in [benchmark suite](benchmarks/Program.cs) uses BenchmarkDotNet 0.14.0 with one process launch, three warmup iterations, five measurement iterations, and managed-memory diagnostics. Each method uses preconstructed domain objects so the calculation results do not include setup cost.
 
+Reference environment:
 
+- GitHub-hosted Ubuntu 24.04.4 LTS runner
+- AMD EPYC 7763; 2 physical / 4 logical cores exposed
+- .NET 8.0.29, x64 RyuJIT, AVX2
+- concurrent workstation GC
+- measured July 19, 2026
 
-Metrics & Evaluation
+### Reference results
 
-Detailed performance metrics, experiment logs, and system evaluation are available in:
+| Workload | Mean latency | 99.9% CI half-width | Std. dev. | Derived throughput | Allocation/op |
+|---|---:|---:|---:|---:|---:|
+| Installment monthly payment | 293.2 ns | 6.89 ns | 1.79 ns | ~3.41 M ops/s | 0 B |
+| Balloon monthly payment | 153.4 ns | 4.21 ns | 0.65 ns | ~6.52 M ops/s | 0 B |
+| Format installment loan | 911.9 ns | 14.25 ns | 3.70 ns | ~1.10 M ops/s | 344 B |
 
-➡ **[`Metrics.md`](Metrics.md)**
+Throughput is derived as `1 second / mean latency`; it is not a separately measured concurrent-load result. The full CSV, Markdown, HTML, TRX, and coverage outputs are available in the [quality-results artifact](https://github.com/CoreyLeath-code/Software3-Lab/actions/runs/29700880940/artifacts/8446410709).
 
----
-docker build -t software3-lab .
-docker run -p 8000:8000 software3-lab
+### Interpretation and limitations
 
+- Both payment calculations are allocation-free in the measured steady state.
+- Balloon calculation is about 48% of the installment calculation latency because it does not evaluate the amortization exponent.
+- Formatting is slower and allocates 344 bytes because it creates the display string.
+- GitHub-hosted runner results are a reference baseline, not a service-level objective. Shared-host variance, CPU model, runtime updates, and thermal/load conditions can change results.
+- These are single-operation microbenchmarks; they do not model disk persistence, end-to-end user latency, concurrency, or production traffic.
 
-## ▶️ How to Run
+## Reproduce the evidence
 
-### Local
+Prerequisites: .NET 8 SDK.
+
 ```bash
-pip install -r requirements.txt
-uvicorn src.api:app --reload
-http://localhost:8000/docs
+dotnet restore Software3-Lab.sln
+dotnet build Software3-Lab.sln --configuration Release --no-restore
+dotnet test Software3-Lab.sln --configuration Release --no-build
+dotnet run --project benchmarks/LoanTracker.Benchmarks.csproj --configuration Release --no-build -- --filter "*"
+```
 
-Future Enhancements
+BenchmarkDotNet writes CSV, GitHub-flavored Markdown, and HTML reports under `BenchmarkDotNet.Artifacts/results/`.
 
-RAG over experiment history
+## Run the application
 
-Model registry promotion
+```bash
+dotnet run --project LoanTracker.csproj
+```
 
-Performance regression alerts
+The console application lets a user create installment or balloon loans, list them, and save or load `loans.json`.
 
-Multi-agent orchestration
+## Container
 
-Design Questions & Reflections
-Q: What problem does this project aim to solve?
-A: This project was built to explore core software engineering principles in a structured lab environment, focusing on clean code organization, object-oriented design, and feature implementation practices that mirror real application development. The goal was to go beyond small scripts and build something with modularity and maintainability in mind.
-Q: Why did I choose this design and approach instead of something simpler?
-A: I chose to emphasize clear separation of concerns and object-oriented patterns so that each component of the system could evolve independently and be easily tested. This was more work than quickly prototyping a single file, but it improved readability, reusability, and made debugging easier over time.
-Q: What were the main trade-offs I made?
-A: The trade-off was between speed of initial development and long-term clarity. I could have sketched the whole thing in a few files, but I would have lost structure and future scalability. By investing in a solid project layout and explicit module boundaries, I traded some early speed for maintainability and extensibility.
-Q: What didn’t work as expected?
-A: Some parts of the implementation didn’t perform as efficiently as I anticipated when handling edge cases or larger input sizes. Addressing these required reevaluating data structures and logic flows, which helped me refine both performance considerations and code clarity.
-Q: What did I learn from building this project?
-A: I learned the value of starting with a solid design foundation and how important it is to think about how future changes will affect an entire system. I also gained deeper insights into debugging practices, version control workflows, and how incremental updates can improve both quality and readability.
-Q: If I had more time or resources, what would I improve next?
-A: I would build out a more comprehensive test suite and add automated testing so that each module could be verified independently. I’d also try to gather user feedback or usage patterns to further refine functionality and polish the user experience.
+```bash
+docker build -t software3-lab .
+docker run --rm -it -v "${PWD}:/data" software3-lab
+```
+
+The runtime image uses the .NET 8 runtime rather than the SDK and executes as the image's non-root `APP_UID`.
+
+## Repository layout
+
+```text
+.
+├── Domain/                 Loan entities and JSON persistence
+├── Services/               Application service
+├── tests/                  xUnit correctness suite
+├── benchmarks/             BenchmarkDotNet performance suite
+├── .github/workflows/      CI definition
+├── LoanTracker.csproj      Console application project
+├── Software3-Lab.sln       Complete build graph
+└── Dockerfile              Reproducible runtime image
+```
+
+## Quality policy
+
+A change is merge-ready when the named solution restores and builds without warnings, all correctness tests pass, the benchmark suite completes, and CI uploads its evidence artifacts. Performance numbers should only be updated from a linked, successful benchmark run with its runtime and hardware context recorded.
