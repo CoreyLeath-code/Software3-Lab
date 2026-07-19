@@ -1,13 +1,17 @@
-// Services/LoanService.cs
-public class LoanService
+namespace LoanTracker;
+
+public sealed class LoanService
 {
-    public void AddLoan(List<Loan> loans, Loan loan)
+    public void AddLoan(ICollection<Loan> loans, Loan loan)
     {
+        ArgumentNullException.ThrowIfNull(loans);
+        ArgumentNullException.ThrowIfNull(loan);
         loans.Add(loan);
     }
 
-    public List<Loan> GetLoans(List<Loan> loans)
+    public IReadOnlyList<Loan> GetLoans(IEnumerable<Loan> loans)
     {
-        return loans;
+        ArgumentNullException.ThrowIfNull(loans);
+        return loans.ToArray();
     }
 }
