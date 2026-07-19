@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -44,10 +44,21 @@ jobs:
           --logger "trx;LogFileName=test-results.trx"
           --collect:"XPlat Code Coverage"
 
-      - name: Upload test results
+      - name: Benchmark
+        run: >
+          dotnet run
+          --project benchmarks/LoanTracker.Benchmarks.csproj
+          --configuration Release
+          --no-build
+          --
+          --filter "*"
+
+      - name: Upload test and benchmark results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dotnet-test-results
-          path: tests/TestResults/**
+          name: dotnet-quality-results
+          path: |
+            tests/TestResults/**
+            BenchmarkDotNet.Artifacts/results/**
           if-no-files-found: warn
