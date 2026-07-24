@@ -45,7 +45,6 @@ If the project uses external services, model artifacts, cloud credentials, or pr
 
 A benchmark number belongs in a versioned artifact tied to a commit and hardware/runtime description. Engineering benchmarks must not be presented as clinical, financial, safety, or model-quality validation without the appropriate domain evidence.
 
-### Extended Q&A
 
 **What is production-ready for this repository?**  
 A reproducible build, tested public contract, controlled configuration, observable runtime, documented security boundary, versioned artifacts, and a tested rollback path.
@@ -108,9 +107,6 @@ The correctness suite uses fixed inputs and exact decimal expectations. It is ru
 
 **Observed result:** 4/4 tests passed (100%) in [GitHub Actions run 29700880940](https://github.com/CoreyLeath-code/Software3-Lab/actions/runs/29700880940). This is test-case pass rate, not statement or branch coverage. Raw TRX and coverage files are retained as CI artifacts.
 
-## Research-style benchmark
-
-### Research question
 
 What is the steady-state cost of the core calculation and presentation paths under a controlled .NET 8 runtime?
 
