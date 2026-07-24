@@ -35,8 +35,6 @@ dotnet test --configuration Release
 
 If the project uses external services, model artifacts, cloud credentials, or private data, start them through documented local fixtures or mocks. Never place secrets or identifiable records in the repository.
 
-### Research-style metrics and benchmarks
-
 | Evidence | Required record |
 |---|---|
 | Correctness | Test command, commit SHA, runtime, and pass/fail result |
