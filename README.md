@@ -1,5 +1,11 @@
 # Software3-Lab
 
+<!-- portfolio-lifecycle-badges:start -->
+[![Latest release](https://img.shields.io/github/v/release/CoreyLeath-code/Software3-Lab?display_name=tag&sort=semver)](https://github.com/CoreyLeath-code/Software3-Lab/releases/latest)
+[![Lifecycle documentation](https://img.shields.io/badge/lifecycle-documented-2563eb)](#ownership-promotion-and-operational-lifecycle)
+[![Maintainer](https://img.shields.io/badge/maintainer-Corey%20Leath-111827)](https://github.com/CoreyLeath-code)
+<!-- portfolio-lifecycle-badges:end -->
+
 [![.NET CI](https://github.com/CoreyLeath-code/Software3-Lab/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/CoreyLeath-code/Software3-Lab/actions/workflows/ci.yml)
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Tests](https://img.shields.io/badge/tests-4%20verified-brightgreen)](tests/LoanTests.cs)
