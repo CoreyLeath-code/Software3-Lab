@@ -9,7 +9,7 @@ COPY Domain/ ./Domain/
 COPY Services/ ./Services/
 RUN dotnet publish LoanTracker.csproj --configuration Release --no-restore --output /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+FROM mcr.microsoft.com/dotnet/runtime:11.0
 WORKDIR /app
 
 LABEL org.opencontainers.image.source="https://github.com/CoreyLeath-code/Software3-Lab"
